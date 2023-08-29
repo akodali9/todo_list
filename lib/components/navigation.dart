@@ -12,6 +12,7 @@ class BottomCustomAppBar extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
+            tooltip: "New list",
             enableFeedback: true,
             onPressed: () {},
             icon: const Icon(Icons.check_box_outlined),
@@ -20,6 +21,7 @@ class BottomCustomAppBar extends StatelessWidget {
             width: 5,
           ),
           IconButton(
+            tooltip: "New drawing note",
             enableFeedback: true,
             onPressed: () {},
             icon: const Icon(Icons.draw_rounded),
@@ -28,6 +30,7 @@ class BottomCustomAppBar extends StatelessWidget {
             width: 5,
           ),
           IconButton(
+            tooltip: "New photo note",
             enableFeedback: true,
             onPressed: () {},
             icon: const Icon(Icons.image_outlined),
