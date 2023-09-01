@@ -21,18 +21,16 @@ class _MainAppState extends State<MainApp> {
   // final Color schemaColorHex = const Color(0XFF1f1f1f);
   final Color schemaColorHex = const Color(0XFF0f2546);
   int crossAxisCount = 1;
-  bool gridIcon = true;
+  bool gridIconBool = true;
   void gridAligment() {
     setState(() {
-      crossAxisCount = 2;
-      gridIcon = false;
+      gridIconBool = false;
     });
   }
 
   void colAligment() {
     setState(() {
-      crossAxisCount = 1;
-      gridIcon = true;
+      gridIconBool = true;
     });
   }
 
@@ -77,7 +75,7 @@ class _MainAppState extends State<MainApp> {
                 snap: true,
                 title: const Text("Your Notes"),
                 actions: [
-                  if (gridIcon == false)
+                  if (gridIconBool == false)
                     IconButton(
                         tooltip: "Single-Column view",
                         onPressed: colAligment,
@@ -90,15 +88,17 @@ class _MainAppState extends State<MainApp> {
                         onPressed: gridAligment,
                         icon: const Icon(Icons.grid_view_outlined)),
                   Container(
-                      margin: const EdgeInsets.only(right: 5),
-                      child: IconButton(
-                          tooltip: "Search",
-                          onPressed: () {},
-                          icon: const Icon(Icons.search)))
+                    margin: const EdgeInsets.only(right: 5),
+                    child: IconButton(
+                      tooltip: "Search",
+                      onPressed: () {},
+                      icon: const Icon(Icons.search),
+                    ),
+                  ),
                 ],
               ),
             ],
-            body: TasksScreen(crossAxisCount: crossAxisCount),
+            body: TasksScreen(gridViewBool: gridIconBool),
           ),
           bottomNavigationBar: const BottomCustomAppBar(),
           floatingActionButton: Builder(
