@@ -4,28 +4,32 @@ import 'package:todo_list/components/navigation.dart';
 import 'package:todo_list/features/tasks/note_edit_area.dart';
 import 'package:todo_list/features/tasks/tasks.dart';
 import 'package:todo_list/models/drawer_item.dart';
-import 'package:todo_list/providers/user_provider.dart';
+import 'package:todo_list/providers/grid_provider.dart';
 import 'package:todo_list/router.dart';
 import 'package:todo_list/widgets/drawertile.dart';
 
+import 'providers/user_simple_preferences.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await UserSimplePreferences.init();
+  bool isGridPrevActive =
+      await UserSimplePreferences.loadGridActiveData() ?? true;
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => UserSettings(),
+          create: (context) => GridSettings(isGridPrevActive),
         ),
       ],
-      child: const MainApp(),
+      child: MainApp(isGridPrevActive: isGridPrevActive),
     ),
   );
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  const MainApp({super.key, required this.isGridPrevActive});
 
+  final bool isGridPrevActive;
   @override
   State<MainApp> createState() => _MainAppState();
 }
@@ -46,13 +50,11 @@ class _MainAppState extends State<MainApp> {
   //     gridIconBool = true;
   //   });
   // }
-  late bool gridIconBool;
 
-  @override
-  void initState() {
-    super.initState();
-    gridIconBool = UserSimplePreferences.loadData() ?? false;
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,7 @@ class _MainAppState extends State<MainApp> {
         onpress: () {},
       ),
     ];
-
+    bool isGridViewActive = Provider.of<GridSettings>(context).isGridActive;
     return MaterialApp(
       title: "Todo Time",
       debugShowCheckedModeBanner: false,
@@ -96,12 +98,12 @@ class _MainAppState extends State<MainApp> {
                 snap: true,
                 title: const Text("Your Notes"),
                 actions: [
-                  if (gridIconBool == true)
+                  if (isGridViewActive == true)
                     IconButton(
                         tooltip: "Single-Column view",
                         onPressed: () {
-                          Provider.of<UserSettings>(context, listen: false)
-                              .setGridIconBool(false);
+                          Provider.of<GridSettings>(context, listen: false)
+                              .setGridStatus(false);
                         },
                         icon: const RotatedBox(
                             quarterTurns: 1,
@@ -110,8 +112,8 @@ class _MainAppState extends State<MainApp> {
                     IconButton(
                         tooltip: "Grid view",
                         onPressed: () {
-                          Provider.of<UserSettings>(context, listen: false)
-                              .setGridIconBool(true);
+                          Provider.of<GridSettings>(context, listen: false)
+                              .setGridStatus(true);
                         },
                         icon: const Icon(Icons.grid_view_outlined)),
                   Container(
@@ -125,7 +127,7 @@ class _MainAppState extends State<MainApp> {
                 ],
               ),
             ],
-            body: TasksScreen(gridViewBool: gridIconBool),
+            body: TasksScreen(isGridViewActive: isGridViewActive),
           ),
           bottomNavigationBar: const BottomCustomAppBar(),
           floatingActionButton: Builder(

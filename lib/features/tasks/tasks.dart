@@ -4,8 +4,8 @@ import 'package:todo_list/functions/itemaxisalignmentcount.dart';
 import 'package:todo_list/models/note_model.dart';
 
 class TasksScreen extends StatefulWidget {
-  const TasksScreen({super.key, required this.gridViewBool});
-  final bool gridViewBool;
+  const TasksScreen({super.key, required this.isGridViewActive});
+  final bool isGridViewActive;
 
   @override
   State<TasksScreen> createState() => _TasksScreenState();
@@ -56,7 +56,7 @@ class _TasksScreenState extends State<TasksScreen> {
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       crossAxisCount:
-          widget.gridViewBool ? crossAxisAlignmentCountItem(context) : 1,
+          widget.isGridViewActive ? crossAxisAlignmentCountItem(context) : 1,
       itemBuilder: (context, index) => Material(
         borderRadius: BorderRadius.circular(10),
         shadowColor: shadowcolor,
