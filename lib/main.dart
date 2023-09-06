@@ -8,10 +8,19 @@ import 'package:todo_list/providers/user_provider.dart';
 import 'package:todo_list/router.dart';
 import 'package:todo_list/widgets/drawertile.dart';
 
-void main() {
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => UserSettings())],
-      child: const MainApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await UserSimplePreferences.init();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserSettings(),
+        ),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {
@@ -37,10 +46,16 @@ class _MainAppState extends State<MainApp> {
   //     gridIconBool = true;
   //   });
   // }
+  late bool gridIconBool;
+
+  @override
+  void initState() {
+    super.initState();
+    gridIconBool = UserSimplePreferences.loadData() ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool gridIconBool = Provider.of<UserSettings>(context).gridIconBool;
     List<DrawerItem> drawerCustomItems = [
       DrawerItem(
         icon: const Icon(Icons.feedback),
@@ -81,12 +96,12 @@ class _MainAppState extends State<MainApp> {
                 snap: true,
                 title: const Text("Your Notes"),
                 actions: [
-                  if (gridIconBool == false)
+                  if (gridIconBool == true)
                     IconButton(
                         tooltip: "Single-Column view",
                         onPressed: () {
                           Provider.of<UserSettings>(context, listen: false)
-                              .setGridIconBool(true);
+                              .setGridIconBool(false);
                         },
                         icon: const RotatedBox(
                             quarterTurns: 1,
@@ -96,7 +111,7 @@ class _MainAppState extends State<MainApp> {
                         tooltip: "Grid view",
                         onPressed: () {
                           Provider.of<UserSettings>(context, listen: false)
-                              .setGridIconBool(false);
+                              .setGridIconBool(true);
                         },
                         icon: const Icon(Icons.grid_view_outlined)),
                   Container(
