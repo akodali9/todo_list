@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list/components/navigation.dart';
 import 'package:todo_list/features/tasks/note_edit_area.dart';
 import 'package:todo_list/features/tasks/tasks.dart';
 import 'package:todo_list/models/drawer_item.dart';
+import 'package:todo_list/providers/user_provider.dart';
 import 'package:todo_list/router.dart';
 import 'package:todo_list/widgets/drawertile.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => UserSettings())],
+      child: const MainApp()));
 }
 
 class MainApp extends StatefulWidget {
@@ -21,21 +25,22 @@ class _MainAppState extends State<MainApp> {
   // final Color schemaColorHex = const Color(0XFF1f1f1f);
   final Color schemaColorHex = const Color(0XFF0f2546);
   int crossAxisCount = 1;
-  bool gridIconBool = true;
-  void gridAligment() {
-    setState(() {
-      gridIconBool = false;
-    });
-  }
 
-  void colAligment() {
-    setState(() {
-      gridIconBool = true;
-    });
-  }
+  // void gridAligment() {
+  //   setState(() {
+  //     gridIconBool = false;
+  //   });
+  // }
+
+  // void colAligment() {
+  //   setState(() {
+  //     gridIconBool = true;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    bool gridIconBool = Provider.of<UserSettings>(context).gridIconBool;
     List<DrawerItem> drawerCustomItems = [
       DrawerItem(
         icon: const Icon(Icons.feedback),
@@ -48,6 +53,7 @@ class _MainAppState extends State<MainApp> {
         onpress: () {},
       ),
     ];
+
     return MaterialApp(
       title: "Todo Time",
       debugShowCheckedModeBanner: false,
@@ -78,14 +84,20 @@ class _MainAppState extends State<MainApp> {
                   if (gridIconBool == false)
                     IconButton(
                         tooltip: "Single-Column view",
-                        onPressed: colAligment,
+                        onPressed: () {
+                          Provider.of<UserSettings>(context, listen: false)
+                              .setGridIconBool(true);
+                        },
                         icon: const RotatedBox(
                             quarterTurns: 1,
                             child: Icon(Icons.view_column_outlined)))
                   else
                     IconButton(
                         tooltip: "Grid view",
-                        onPressed: gridAligment,
+                        onPressed: () {
+                          Provider.of<UserSettings>(context, listen: false)
+                              .setGridIconBool(false);
+                        },
                         icon: const Icon(Icons.grid_view_outlined)),
                   Container(
                     margin: const EdgeInsets.only(right: 5),

@@ -8,11 +8,11 @@ int crossAxisAlignmentCountItem(context) {
   } else if (screenWidthsize >= 1280) {
     crossAxisCount_ = 4;
   } else if (screenWidthsize >= 720) {
-    crossAxisCount_ = 4;
+    crossAxisCount_ = 3;
   } else if (screenWidthsize >= 350) {
     crossAxisCount_ = 2;
-  } else if (screenWidthsize >= 280) {
-    crossAxisCount_ = 2;
+  } else if (screenWidthsize >= 280) {  
+    crossAxisCount_ = 1;
   } else {
     crossAxisCount_ = 1;
   }
