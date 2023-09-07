@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:todo_list/features/tasks/note_edit_area.dart';
 import 'package:todo_list/functions/itemaxisalignmentcount.dart';
 import 'package:todo_list/models/note_model.dart';
 
@@ -65,7 +66,9 @@ class _TasksScreenState extends State<TasksScreen> {
         elevation: 5.0,
         child: InkWell(
           enableFeedback: true,
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, NoteEditPage.routename);
+          },
           onLongPress: () {},
           borderRadius: BorderRadius.circular(10),
           child: Container(

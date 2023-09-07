@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/components/navigation.dart';
+import 'package:todo_list/features/search/search.dart';
 import 'package:todo_list/features/tasks/note_edit_area.dart';
 import 'package:todo_list/features/tasks/tasks.dart';
 import 'package:todo_list/models/drawer_item.dart';
@@ -92,40 +93,7 @@ class _MainAppState extends State<MainApp> {
           body: NestedScrollView(
             floatHeaderSlivers: true,
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverAppBar(
-                floating: true,
-                scrolledUnderElevation: 1,
-                snap: true,
-                title: const Text("Your Notes"),
-                actions: [
-                  if (isGridViewActive == true)
-                    IconButton(
-                        tooltip: "Single-Column view",
-                        onPressed: () {
-                          Provider.of<GridSettings>(context, listen: false)
-                              .setGridStatus(false);
-                        },
-                        icon: const RotatedBox(
-                            quarterTurns: 1,
-                            child: Icon(Icons.view_column_outlined)))
-                  else
-                    IconButton(
-                        tooltip: "Grid view",
-                        onPressed: () {
-                          Provider.of<GridSettings>(context, listen: false)
-                              .setGridStatus(true);
-                        },
-                        icon: const Icon(Icons.grid_view_outlined)),
-                  Container(
-                    margin: const EdgeInsets.only(right: 5),
-                    child: IconButton(
-                      tooltip: "Search",
-                      onPressed: () {},
-                      icon: const Icon(Icons.search),
-                    ),
-                  ),
-                ],
-              ),
+              SearchComp(isGridViewActive: isGridViewActive),
             ],
             body: TasksScreen(isGridViewActive: isGridViewActive),
           ),

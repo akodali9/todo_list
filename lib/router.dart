@@ -9,6 +9,8 @@ Route<dynamic> generateRoutes(RouteSettings routeSettings) {
         settings: routeSettings,
         maintainState: true,
       );
+    // case SearchComp.routename:
+    //   return MaterialPageRoute(builder: (_) => SearchComp(isGridViewActive: ,), settings: routeSettings, maintainState: true);
     default:
       return MaterialPageRoute(
         settings: routeSettings,
