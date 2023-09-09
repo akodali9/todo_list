@@ -14,18 +14,24 @@ class DrawerTileCustom extends StatelessWidget {
             enableFeedback: true,
             padding:
                 MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 15))),
-        onPressed: item.onpress,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            item.icon,
-            Text(
-              item.name,
-              style: const TextStyle(
-                fontSize: 16,
+        // onPressed: () => item.onpress,
+        onPressed: () {
+          Navigator.pushNamed(context, item.routename);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              item.icon,
+              Text(
+                item.name,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

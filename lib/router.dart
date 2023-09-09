@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/features/settings/settings_page.dart';
 import 'package:todo_list/features/tasks/note_edit_area.dart';
 
 Route<dynamic> generateRoutes(RouteSettings routeSettings) {
@@ -9,8 +10,12 @@ Route<dynamic> generateRoutes(RouteSettings routeSettings) {
         settings: routeSettings,
         maintainState: true,
       );
-    // case SearchComp.routename:
-    //   return MaterialPageRoute(builder: (_) => SearchComp(isGridViewActive: ,), settings: routeSettings, maintainState: true);
+    case SettingsPage.routename:
+      return MaterialPageRoute(
+        builder: (_) => const SettingsPage(),
+        settings: routeSettings,
+        maintainState: true,
+      );
     default:
       return MaterialPageRoute(
         settings: routeSettings,

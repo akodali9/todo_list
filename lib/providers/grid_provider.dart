@@ -19,7 +19,6 @@ class GridSettings extends ChangeNotifier {
   setGridStatus(bool val) async {
     isGridActive = val;
     await UserSimplePreferences.saveGridActiveData(isGridActive);
-    print(isGridActive);
     notifyListeners();
   }
 

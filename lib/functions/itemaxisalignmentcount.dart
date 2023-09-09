@@ -11,7 +11,9 @@ int crossAxisAlignmentCountItem(context) {
     crossAxisCount_ = 3;
   } else if (screenWidthsize >= 350) {
     crossAxisCount_ = 2;
-  } else if (screenWidthsize >= 280) {  
+  } else if (screenWidthsize >= 300) {
+    crossAxisCount_ = 2;
+  } else if (screenWidthsize >= 280) {
     crossAxisCount_ = 1;
   } else {
     crossAxisCount_ = 1;
