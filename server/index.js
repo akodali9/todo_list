@@ -6,13 +6,15 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-app.listen(port, () => {
-  console.log("Express app running!");
-});
+
 
 app.use('/auth',Authrouter);
 
 app.get("/", (req, res) => {
   console.log("hello world!");
   res.send({ greeting: "hello" });
+});
+
+app.listen(port, "0.0.0.0", () => {
+  console.log("Express app running!");
 });

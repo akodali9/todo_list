@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 const users = [
   {
     id: 1,
-    username: "user1",
+    email: "user1@gmail.com",
     password: "pass1",
   },
   {
     id: 2,
-    username: "user2",
+    email: "user2@gmail.com",
     password: "pass2",
   },
 ];
@@ -19,17 +19,17 @@ const jwtsecretkey = "dfkjf3kejfklenuy@F$^VJHbn";
 
 Authrouter.post('/signin', (req,res)=>{
     console.log("Sign-in requested")
-    const {username, password} = req.body;
+    const {email, password} = req.body;
 
-    const user = users.find((subuser)=> subuser.username == username);
+    const user = users.find((subuser)=> subuser.email == email);
 
     if (!user || user.password !== password){
-        return res.status(401).json({message: 'Inavlid Username or Password'});
+        return res.status(401).json({message: 'Invalid Username or Password'});
     }
 
-    const token = jwt.sign({userId : user.id}, jwtsecretkey);
+    const token = jwt.sign({useremail : user.email}, jwtsecretkey);
 
-    res.json({token});
+    res.status(200).json({token});
 });
 
 module.exports = Authrouter;

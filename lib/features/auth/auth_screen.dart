@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/components/alert_custom.dart';
+import 'package:todo_list/features/auth/auth_service.dart';
+import 'package:todo_list/models/user.dart';
+import 'package:todo_list/providers/user_provider.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -12,7 +17,7 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController passwordcontroller = TextEditingController(text: "");
   TextEditingController conformpasswordcontroller =
       TextEditingController(text: "");
-
+  String password_dummy = "";
   bool showpass = true;
   bool conformshowpass = true;
   bool showSignup = true;
@@ -162,7 +167,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               });
                             },
                             child: const Text(
-                              "Sign-in",
+                              "Sign-in here",
                               style: TextStyle(
                                 fontSize: 18,
                               ),
@@ -181,10 +186,10 @@ class _AuthScreenState extends State<AuthScreen> {
                               label: Text("Email"),
                               border: OutlineInputBorder(),
                             ),
-                            onChanged: (emailvalue) {
-                              emailcontroller.value =
-                                  TextEditingValue(text: emailvalue);
-                            },
+                            // onChanged: (emailvalue) {
+                            //   emailcontroller.value =
+                            //       TextEditingValue(text: emailvalue);
+                            // },
                             controller: emailcontroller,
                           ),
                           const SizedBox(
@@ -196,12 +201,14 @@ class _AuthScreenState extends State<AuthScreen> {
                             autocorrect: false,
                             onChanged: (passval) {
                               setState(() {
-                                passwordcontroller.value =
-                                    TextEditingValue(text: passval);
+                                password_dummy = passval;
                               });
+
+                              // passwordcontroller.value =
+                              //     TextEditingValue(text: passval);
                             },
                             decoration: InputDecoration(
-                                suffixIcon: passwordcontroller.text != ""
+                                suffixIcon: password_dummy != ""
                                     ? IconButton(
                                         icon: showpass
                                             ? const Icon(Icons.remove_red_eye)
@@ -233,7 +240,18 @@ class _AuthScreenState extends State<AuthScreen> {
                                     vertical: 10, horizontal: 20),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              final userCred = User(
+                                  email: emailcontroller.text,
+                                  password: passwordcontroller.text);
+                              final response = await AuthService.fetchLogin(
+                                  userCred, context);
+                              if (context.mounted) {
+                                await Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .updatetoken(response['token']);
+                              }
+                            },
                             child: const Text(
                               "Sign-in",
                               style: TextStyle(
@@ -263,7 +281,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               });
                             },
                             child: const Text(
-                              "Sign-up",
+                              "Sign-up here",
                               style: TextStyle(
                                 fontSize: 18,
                               ),
