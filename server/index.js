@@ -1,14 +1,24 @@
 const express = require("express");
 const Authrouter = require("./features/auth/auth");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const app = express();
 const port = 3000;
 
+const DB =
+  "mongodb+srv://akashkodali6:BYPazZOqqMS0Xo44@deployment-1.twu5aqx.mongodb.net/?retryWrites=true&w=majority";
+
 app.use(bodyParser.json());
+app.use("/auth", Authrouter);
 
-
-
-app.use('/auth',Authrouter);
+mongoose
+  .connect(DB)
+  .then(() => {
+    console.log("DB Connection Succesfull");
+  })
+  .catch((e) => {
+    console.log(`message ${e}`);
+  })
 
 app.get("/", (req, res) => {
   console.log("hello world!");

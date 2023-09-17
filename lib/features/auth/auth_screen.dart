@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/components/alert_custom.dart';
 import 'package:todo_list/features/auth/auth_service.dart';
 import 'package:todo_list/models/user.dart';
 import 'package:todo_list/providers/user_provider.dart';
@@ -123,7 +122,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     : const SizedBox(),
                                 // label: const Text("Password"),
                                 border: const OutlineInputBorder(),
-                                labelText: "Conform Password"),
+                                labelText: "Confirm Password"),
                             controller: conformpasswordcontroller,
                           ),
                           const SizedBox(
@@ -136,7 +135,18 @@ class _AuthScreenState extends State<AuthScreen> {
                                     vertical: 10, horizontal: 20),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              final userCred = User(
+                                  email: emailcontroller.text,
+                                  password: passwordcontroller.text);
+                              final response = await AuthService.postSignup(
+                                  userCred, context);
+                              // if (context.mounted) {
+                              //   await Provider.of<UserProvider>(context,
+                              //           listen: false)
+                              //       .updatetoken(response['token']);
+                              // }
+                            },
                             child: const Text(
                               "Sign-up",
                               style: TextStyle(
