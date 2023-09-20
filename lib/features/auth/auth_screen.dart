@@ -47,10 +47,6 @@ class _AuthScreenState extends State<AuthScreen> {
                               label: Text("Email"),
                               border: OutlineInputBorder(),
                             ),
-                            onChanged: (emailvalue) {
-                              emailcontroller.value =
-                                  TextEditingValue(text: emailvalue);
-                            },
                             controller: emailcontroller,
                           ),
                           const SizedBox(
@@ -61,10 +57,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (passval) {
-                              setState(() {
-                                passwordcontroller.value =
-                                    TextEditingValue(text: passval);
-                              });
+                              passwordcontroller.value =
+                                  TextEditingValue(text: passval);
                             },
                             decoration: InputDecoration(
                                 suffixIcon: passwordcontroller.text != ""
@@ -97,10 +91,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (passval) {
-                              setState(() {
-                                conformpasswordcontroller.value =
-                                    TextEditingValue(text: passval);
-                              });
+                              conformpasswordcontroller.value =
+                                  TextEditingValue(text: passval);
                             },
                             decoration: InputDecoration(
                                 suffixIcon: conformpasswordcontroller.text != ""
@@ -196,10 +188,6 @@ class _AuthScreenState extends State<AuthScreen> {
                               label: Text("Email"),
                               border: OutlineInputBorder(),
                             ),
-                            // onChanged: (emailvalue) {
-                            //   emailcontroller.value =
-                            //       TextEditingValue(text: emailvalue);
-                            // },
                             controller: emailcontroller,
                           ),
                           const SizedBox(
@@ -210,15 +198,15 @@ class _AuthScreenState extends State<AuthScreen> {
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (passval) {
-                              setState(() {
-                                password_dummy = passval;
-                              });
+                              // setState(() {
+                              //   password_dummy = passval;
+                              // });
 
-                              // passwordcontroller.value =
-                              //     TextEditingValue(text: passval);
+                              passwordcontroller.value =
+                                  TextEditingValue(text: passval);
                             },
                             decoration: InputDecoration(
-                                suffixIcon: password_dummy != ""
+                                suffixIcon: passwordcontroller.text != ""
                                     ? IconButton(
                                         icon: showpass
                                             ? const Icon(Icons.remove_red_eye)

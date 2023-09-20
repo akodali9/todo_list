@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
           /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         return value.match(re);
       },
-      message: "Please enter a valid email address",
+      message: 'Please enter a valid email address'
     },
   },
   password: {
@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
         },
         message: 'Please enter a long password'
       },
-  }
+  },
 });
 
 const User = mongoose.model('User', userSchema);

@@ -18,44 +18,54 @@ const users = [
 
 const jwtsecretkey = "dfkjf3kejfklenuy@F$^VJHbn";
 
-Authrouter.post("/signup", (req, res) => {
+Authrouter.post("/signup", async (req, res) => {
   console.log("Sign-up requested");
 
   try {
     const { email, password } = req.body;
-    const isExisting = User.findOne({ email });
+
+    const isExisting = await User.findOne({ email });
+
+    console.log(`find one: ${isExisting}`);
 
     if (isExisting) {
-      res
+      return res
         .status(400)
         .send({ msg: "User with the same email id already exists." });
     }
 
     let user = User({
       email,
-      password
+      password,
     });
-
-    user = user.save();
-    res.status(200).json({ user });
+    try {
+      user = user.save();
+      
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+    res.status(200).json({ validation: "true" });
   } catch (e) {
     res.status(500).send({ error: e.message });
   }
 });
 
-Authrouter.post("/signin", (req, res) => {
+Authrouter.post("/signin", async (req, res) => {
   console.log("Sign-in requested");
   const { email, password } = req.body;
 
-  const user = users.find((subuser) => subuser.email == email);
+  const user = await User.findOne({ email });
+
+  const userFound = User(user);
+  console.log(`found email: ${userFound}`);
 
   if (!user || user.password !== password) {
     return res.status(401).json({ message: "Invalid Username or Password" });
   }
 
-  const token = jwt.sign({ useremail: user.email }, jwtsecretkey);
+  const token = jwt.sign({ email }, jwtsecretkey);
 
-  res.status(200).json({ token });
+  res.status(200).json({ token, user });
 });
 
 module.exports = Authrouter;

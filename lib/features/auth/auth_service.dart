@@ -23,7 +23,29 @@ class AuthService {
         headers: AuthService.headers,
       );
 
-      print(response);
+      final responsejson = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => const AlertCustom(
+              errorMessage: "Thank you for registering you can login now.",
+            ),
+          );
+        }
+      }
+
+      if (response.statusCode == 400) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertCustom(
+              errorMessage: responsejson['msg'],
+            ),
+          );
+        }
+      }
     } catch (e) {}
     ;
   }
