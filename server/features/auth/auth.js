@@ -10,7 +10,7 @@ Authrouter.post("/signup", async (req, res) => {
 
   try {
     const { username, email, password } = req.body;
-
+    const lowerCase_email = email.toLowerCase();
     const isExisting = await User.findOne({ email });
     if (isExisting) {
       return res
@@ -20,7 +20,7 @@ Authrouter.post("/signup", async (req, res) => {
 
     let user = new User({
       username,
-      email,
+      email: lowerCase_email,
       password,
     });
 

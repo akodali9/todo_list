@@ -9,6 +9,7 @@ class AuthScreen extends StatefulWidget {
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
+  static String routename = "/auth-screen";
 }
 
 class _AuthScreenState extends State<AuthScreen> {
