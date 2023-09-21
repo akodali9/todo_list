@@ -12,14 +12,18 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  TextEditingController emailcontroller = TextEditingController(text: "");
-  TextEditingController passwordcontroller = TextEditingController(text: "");
-  TextEditingController conformpasswordcontroller =
-      TextEditingController(text: "");
-  String password_dummy = "";
+  TextEditingController usernamecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController conformpasswordcontroller = TextEditingController();
+  String passwordDummy = "";
+  String conformpasswordDummy = "";
   bool showpass = true;
   bool conformshowpass = true;
   bool showSignup = true;
+
+  final fromKey = GlobalKey<FormState>();
+  bool checkpass = false;
   @override
   void initState() {
     super.initState();
@@ -40,9 +44,33 @@ class _AuthScreenState extends State<AuthScreen> {
               padding: const EdgeInsets.all(10.0),
               child: showSignup
                   ? Form(
+                      key: fromKey,
                       child: Column(
                         children: [
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your name.";
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              label: Text("Name"),
+                              border: OutlineInputBorder(),
+                            ),
+                            controller: usernamecontroller,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            // key: emailKey,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your email.";
+                              }
+                              return null;
+                            },
                             decoration: const InputDecoration(
                               label: Text("Email"),
                               border: OutlineInputBorder(),
@@ -53,15 +81,27 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 20,
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your password.";
+                              }
+                              // if (passwordcontroller.text !=
+                              //         conformpasswordcontroller.text &&
+                              //     checkpass == true) {
+                              //   return "Entered passwords are not alike.";
+                              // }
+                              return null;
+                            },
                             obscureText: showpass,
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (passval) {
-                              passwordcontroller.value =
-                                  TextEditingValue(text: passval);
+                              setState(() {
+                                passwordDummy = passval;
+                              });
                             },
                             decoration: InputDecoration(
-                                suffixIcon: passwordcontroller.text != ""
+                                suffixIcon: passwordDummy != ""
                                     ? IconButton(
                                         icon: showpass
                                             ? const Icon(Icons.remove_red_eye)
@@ -87,15 +127,28 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 20,
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your password again.";
+                              }
+
+                              if (passwordcontroller.text != value &&
+                                  checkpass == true) {
+                                return "Entered passwords are not alike.";
+                              }
+
+                              return null;
+                            },
                             obscureText: conformshowpass,
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (passval) {
-                              conformpasswordcontroller.value =
-                                  TextEditingValue(text: passval);
+                              setState(() {
+                                conformpasswordDummy = passval;
+                              });
                             },
                             decoration: InputDecoration(
-                                suffixIcon: conformpasswordcontroller.text != ""
+                                suffixIcon: conformpasswordDummy != ""
                                     ? IconButton(
                                         icon: conformshowpass
                                             ? const Icon(Icons.remove_red_eye)
@@ -114,7 +167,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     : const SizedBox(),
                                 // label: const Text("Password"),
                                 border: const OutlineInputBorder(),
-                                labelText: "Confirm Password"),
+                                labelText: "Conform Password"),
                             controller: conformpasswordcontroller,
                           ),
                           const SizedBox(
@@ -128,16 +181,23 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                             ),
                             onPressed: () async {
-                              final userCred = User(
-                                  email: emailcontroller.text,
-                                  password: passwordcontroller.text);
-                              final response = await AuthService.postSignup(
-                                  userCred, context);
-                              // if (context.mounted) {
-                              //   await Provider.of<UserProvider>(context,
-                              //           listen: false)
-                              //       .updatetoken(response['token']);
-                              // }
+                              if (passwordDummy != "") {
+                                setState(() {
+                                  checkpass = true;
+                                });
+                              } else if (passwordDummy == "") {
+                                setState(() {
+                                  checkpass = false;
+                                });
+                              }
+
+                              if (fromKey.currentState!.validate()) {
+                                final userCred = User(
+                                    username: usernamecontroller.text,
+                                    email: emailcontroller.text,
+                                    password: passwordcontroller.text);
+                                await AuthService.postSignup(userCred, context);
+                              }
                             },
                             child: const Text(
                               "Sign-up",
@@ -162,10 +222,13 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             onPressed: () {
                               setState(() {
+                                fromKey.currentState?.reset();
                                 showSignup = false;
                                 emailcontroller.clear();
                                 passwordcontroller.clear();
                                 conformpasswordcontroller.clear();
+                                conformpasswordDummy = "";
+                                passwordDummy = "";
                               });
                             },
                             child: const Text(
@@ -179,11 +242,18 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     )
                   : Form(
+                      key: fromKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your email";
+                              }
+                              return null;
+                            },
                             decoration: const InputDecoration(
                               label: Text("Email"),
                               border: OutlineInputBorder(),
@@ -194,19 +264,22 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 20,
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your password";
+                              }
+                              return null;
+                            },
                             obscureText: showpass,
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (passval) {
-                              // setState(() {
-                              //   password_dummy = passval;
-                              // });
-
-                              passwordcontroller.value =
-                                  TextEditingValue(text: passval);
+                              setState(() {
+                                passwordDummy = passval;
+                              });
                             },
                             decoration: InputDecoration(
-                                suffixIcon: passwordcontroller.text != ""
+                                suffixIcon: passwordDummy != ""
                                     ? IconButton(
                                         icon: showpass
                                             ? const Icon(Icons.remove_red_eye)
@@ -239,15 +312,27 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                             ),
                             onPressed: () async {
-                              final userCred = User(
-                                  email: emailcontroller.text,
-                                  password: passwordcontroller.text);
-                              final response = await AuthService.fetchLogin(
-                                  userCred, context);
-                              if (context.mounted) {
-                                await Provider.of<UserProvider>(context,
-                                        listen: false)
-                                    .updatetoken(response['token']);
+                              if (passwordDummy != "") {
+                                setState(() {
+                                  checkpass = true;
+                                });
+                              } else if (passwordDummy == "") {
+                                setState(() {
+                                  checkpass = false;
+                                });
+                              }
+
+                              if (fromKey.currentState!.validate()) {
+                                final userCred = User(
+                                    email: emailcontroller.text,
+                                    password: passwordcontroller.text);
+                                final response = await AuthService.fetchLogin(
+                                    userCred, context);
+                                if (context.mounted) {
+                                  await Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .updatetoken(response['token']);
+                                }
                               }
                             },
                             child: const Text(
@@ -276,6 +361,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 showSignup = true;
                                 emailcontroller.clear();
                                 passwordcontroller.clear();
+                                passwordDummy = "";
                               });
                             },
                             child: const Text(

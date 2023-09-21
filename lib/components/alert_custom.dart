@@ -7,7 +7,12 @@ class AlertCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(errorMessage),
+      title: Text(
+        errorMessage,
+        style: const TextStyle(
+          fontSize: 20,
+        ),
+      ),
       actions: [
         TextButton(
             onPressed: () {

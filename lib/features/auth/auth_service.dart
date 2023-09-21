@@ -12,6 +12,7 @@ class AuthService {
 
   static Future postSignup(User usercred, BuildContext context) async {
     final Map<String, dynamic> data = {
+      "username": usercred.username,
       "email": usercred.email,
       "password": usercred.password
     };
@@ -23,6 +24,7 @@ class AuthService {
         headers: AuthService.headers,
       );
 
+      // print(response);
       final responsejson = json.decode(response.body);
 
       if (response.statusCode == 200) {
@@ -35,13 +37,22 @@ class AuthService {
           );
         }
       }
-
       if (response.statusCode == 400) {
         if (context.mounted) {
           showDialog(
             context: context,
             builder: (context) => AlertCustom(
               errorMessage: responsejson['msg'],
+            ),
+          );
+        }
+      }
+      if (response.statusCode == 500) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertCustom(
+              errorMessage: responsejson['error'],
             ),
           );
         }
