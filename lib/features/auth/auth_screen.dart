@@ -175,12 +175,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 20,
                           ),
                           ElevatedButton(
-                            style: const ButtonStyle(
-                              padding: MaterialStatePropertyAll(
-                                EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                              ),
-                            ),
                             onPressed: () async {
                               if (passwordDummy != "") {
                                 setState(() {
@@ -203,7 +197,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: const Text(
                               "Sign-up",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
                             ),
                           ),
@@ -215,12 +209,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 5,
                           ),
                           ElevatedButton(
-                            style: const ButtonStyle(
-                              padding: MaterialStatePropertyAll(
-                                EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 40),
-                              ),
-                            ),
                             onPressed: () {
                               setState(() {
                                 fromKey.currentState?.reset();
@@ -235,7 +223,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: const Text(
                               "Sign-in here",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
                             ),
                           ),
@@ -306,12 +294,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 20,
                           ),
                           ElevatedButton(
-                            style: const ButtonStyle(
-                              padding: MaterialStatePropertyAll(
-                                EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                              ),
-                            ),
                             onPressed: () async {
                               if (passwordDummy != "") {
                                 setState(() {
@@ -339,7 +321,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: const Text(
                               "Sign-in",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
                             ),
                           ),
@@ -351,12 +333,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: 5,
                           ),
                           ElevatedButton(
-                            style: const ButtonStyle(
-                              padding: MaterialStatePropertyAll(
-                                EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 40),
-                              ),
-                            ),
                             onPressed: () {
                               setState(() {
                                 showSignup = true;
@@ -368,7 +344,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: const Text(
                               "Sign-up here",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
                             ),
                           ),
