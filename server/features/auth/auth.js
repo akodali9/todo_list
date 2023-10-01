@@ -18,10 +18,16 @@ Authrouter.post("/signup", async (req, res) => {
         .send({ msg: "User with the same email id already exists." });
     }
 
+    emptyarray = [
+      '{ "title": "note1", "noteDesc": "this is note 1" }',
+      '{ "title": "note2", "noteDesc": "this is note 2" }',
+    ];
+
     let user = new User({
       username,
       email: lowerCase_email,
       password,
+      notes: emptyarray,
     });
 
     user = await user.save();

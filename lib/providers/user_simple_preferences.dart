@@ -23,17 +23,14 @@ class UserSimplePreferences {
     SharedPreferences userPrefs = await UserSimplePreferences.init();
     userPrefs.setString(usertokenkey, val);
   }
-  
+
   static Future loadUserToken() async {
     SharedPreferences userPrefs = await UserSimplePreferences.init();
     return userPrefs.getString(usertokenkey);
-    
   }
 
   static Future deleteUserToken() async {
     SharedPreferences userPrefs = await UserSimplePreferences.init();
     return userPrefs.remove(usertokenkey);
-    
   }
-
 }

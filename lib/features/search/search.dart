@@ -18,7 +18,7 @@ class _SearchCompState extends State<SearchComp> {
       floating: true,
       toolbarHeight: 70,
       titleSpacing: 0,
-      scrolledUnderElevation: 0,
+      scrolledUnderElevation: 1,
       snap: true,
       title: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
@@ -63,11 +63,11 @@ class _SearchCompState extends State<SearchComp> {
           },
           suggestionsBuilder: (context, controller) {
             return List<ListTile>.generate(
-              5,
+              1,
               (int index) {
-                final String item = 'item $index';
+                const String item = 'Coming Soon';
                 return ListTile(
-                  title: Text(item),
+                  title: const Text(item),
                   onTap: () {
                     setState(
                       () {

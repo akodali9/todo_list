@@ -7,6 +7,7 @@ import 'package:todo_list/features/settings/settings_page.dart';
 import 'package:todo_list/features/tasks/note_edit_area.dart';
 import 'package:todo_list/features/tasks/tasks.dart';
 import 'package:todo_list/models/drawer_item.dart';
+import 'package:todo_list/models/user.dart';
 import 'package:todo_list/providers/grid_provider.dart';
 import 'package:todo_list/providers/user_provider.dart';
 import 'package:todo_list/router.dart';
@@ -19,6 +20,7 @@ void main() async {
   bool isGridPrevActive =
       await UserSimplePreferences.loadGridActiveData() ?? true;
   String usertoken = await UserSimplePreferences.loadUserToken() ?? "";
+
   runApp(
     MultiProvider(
       providers: [
@@ -50,7 +52,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   // bool authstatus = true;
   // final Color schemaColorHex = const Color(0XFF1f1f1f);
-  final Color schemaColorHex = const Color(0XFF0f2546);
+  final Color schemaColorHex = const Color.fromARGB(255, 201, 239, 255);
   int crossAxisCount = 1;
 
   @override
@@ -108,6 +110,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    fetchUser() async {
+      User? user = await User.loadFromSharedPreferences();
+      await Future.delayed(const Duration(milliseconds: 500));
+      return user;
+    }
+
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
@@ -115,9 +123,24 @@ class HomeScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SearchComp(isGridViewActive: isGridViewActive),
           ],
-          body: TasksScreen(isGridViewActive: isGridViewActive),
+          body: FutureBuilder(
+            future: fetchUser(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator()));
+              } else {
+                return TasksScreen(
+                    isGridViewActive: isGridViewActive,
+                    tasksList: snapshot.data!.notes);
+              }
+            },
+          ),
         ),
-        bottomNavigationBar: const BottomCustomAppBar(),
+        // bottomNavigationBar: const BottomCustomAppBar(),
         floatingActionButton: Builder(
           builder: (context) {
             return FloatingActionButton(
@@ -135,7 +158,7 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         drawer: Drawer(
           child: Container(
             padding: const EdgeInsets.all(10),

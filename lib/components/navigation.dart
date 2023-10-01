@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BottomCustomAppBar extends StatelessWidget {
+class BottomCustomAppBar extends StatefulWidget {
   const BottomCustomAppBar({super.key});
 
+  @override
+  State<BottomCustomAppBar> createState() => _BottomCustomAppBarState();
+}
+
+class _BottomCustomAppBarState extends State<BottomCustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(

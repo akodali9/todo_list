@@ -28,6 +28,12 @@ const userSchema = mongoose.Schema({
         message: 'Please enter a long password'
       },
   },
+  notes: [
+    {
+      required: true,
+      type: String
+    }
+  ]
 });
 
 

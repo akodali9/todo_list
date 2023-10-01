@@ -72,7 +72,7 @@ class AuthService {
           body: json.encode(data), headers: headers);
       final responsejson = json.decode(response.body);
       if (response.statusCode == 200) {
-        print('response body: $responsejson + ${response.statusCode}');
+        // print('response body: $responsejson + ${response.statusCode}');
         return responsejson;
       } else if (response.statusCode == 401) {
         if (context.mounted) {
@@ -82,10 +82,10 @@ class AuthService {
                   AlertCustom(errorMessage: responsejson['message']));
         }
       } else {
-        print("message: ${response.body}+ ${response.statusCode}");
+        // print("message: ${response.body}+ ${response.statusCode}");
       }
     } catch (e) {
-      print("error: $e");
+      // print("error: $e");
     }
   }
 }

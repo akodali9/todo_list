@@ -5,8 +5,10 @@ import 'package:todo_list/functions/itemaxisalignmentcount.dart';
 import 'package:todo_list/models/note_model.dart';
 
 class TasksScreen extends StatefulWidget {
-  const TasksScreen({super.key, required this.isGridViewActive});
+  const TasksScreen(
+      {super.key, required this.isGridViewActive, required this.tasksList});
   final bool isGridViewActive;
+  final List<NoteModel> tasksList;
 
   @override
   State<TasksScreen> createState() => _TasksScreenState();
@@ -15,36 +17,6 @@ class TasksScreen extends StatefulWidget {
 class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
-    List<NoteModel> itemlist = [
-      NoteModel(
-        title: "title 1",
-        noteDesc:
-            "This is note description 1. works perfect but need to render the item again",
-      ),
-      NoteModel(
-        title: "title 2",
-        noteDesc: "This is note description 1",
-      ),
-      NoteModel(
-        title: "title 3",
-        noteDesc:
-            "This is note description 1 blahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblah",
-      ),
-      NoteModel(
-        title: "title 4",
-        noteDesc: "This is note description 1. I think this is something good ",
-      ),
-      NoteModel(
-        title: "title 5",
-        noteDesc:
-            "This is note description 1. blah blah blah blah blah blahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblahblah blah",
-      ),
-      NoteModel(
-        title: "title 6",
-        noteDesc: "This is note description 1",
-      ),
-    ];
-
     final Color color = Theme.of(context).colorScheme.surface;
     Color shadowcolor = Theme.of(context).colorScheme.shadow;
     Color surfaceTint = Theme.of(context).colorScheme.surfaceTint;
@@ -52,7 +24,7 @@ class _TasksScreenState extends State<TasksScreen> {
 
     return MasonryGridView.count(
       physics: const BouncingScrollPhysics(),
-      itemCount: itemlist.length,
+      itemCount: widget.tasksList.length,
       padding: const EdgeInsets.all(8.0),
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
@@ -67,7 +39,13 @@ class _TasksScreenState extends State<TasksScreen> {
         child: InkWell(
           enableFeedback: true,
           onTap: () {
-            Navigator.pushNamed(context, NoteEditPage.routename);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NoteEditPage(
+                          note: widget.tasksList[index],
+                          index: index,
+                        )));
           },
           onLongPress: () {},
           borderRadius: BorderRadius.circular(10),
@@ -83,7 +61,7 @@ class _TasksScreenState extends State<TasksScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  itemlist[index].title,
+                  widget.tasksList[index].title,
                   style: const TextStyle(
                     fontSize: 20,
                   ),
@@ -91,7 +69,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(itemlist[index].noteDesc),
+                Text(widget.tasksList[index].noteDesc),
               ],
             ),
           ),

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/features/auth/auth_service.dart';
+import 'package:todo_list/models/note_model.dart';
 import 'package:todo_list/models/user.dart';
 import 'package:todo_list/providers/user_provider.dart';
+import 'package:todo_list/providers/user_simple_preferences.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -21,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String conformpasswordDummy = "";
   bool showpass = true;
   bool conformshowpass = true;
-  bool showSignup = true;
+  bool showSignup = false;
 
   final fromKey = GlobalKey<FormState>();
   bool checkpass = false;
@@ -57,7 +61,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                             decoration: const InputDecoration(
                               label: Text("Name"),
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
                             ),
                             controller: usernamecontroller,
                           ),
@@ -74,7 +80,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                             decoration: const InputDecoration(
                               label: Text("Email"),
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
                             ),
                             controller: emailcontroller,
                           ),
@@ -118,9 +126,11 @@ class _AuthScreenState extends State<AuthScreen> {
                                           });
                                         },
                                       )
-                                    : const SizedBox(),
+                                    : null,
                                 // label: const Text("Password"),
-                                border: const OutlineInputBorder(),
+                                border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 labelText: "Password"),
                             controller: passwordcontroller,
                           ),
@@ -165,9 +175,11 @@ class _AuthScreenState extends State<AuthScreen> {
                                           });
                                         },
                                       )
-                                    : const SizedBox(),
+                                    : null,
                                 // label: const Text("Password"),
-                                border: const OutlineInputBorder(),
+                                border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 labelText: "Conform Password"),
                             controller: conformpasswordcontroller,
                           ),
@@ -245,7 +257,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                             decoration: const InputDecoration(
                               label: Text("Email"),
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
                             ),
                             controller: emailcontroller,
                           ),
@@ -284,9 +298,11 @@ class _AuthScreenState extends State<AuthScreen> {
                                           });
                                         },
                                       )
-                                    : const SizedBox(),
+                                    : null,
                                 // label: const Text("Password"),
-                                border: const OutlineInputBorder(),
+                                border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 labelText: "Password"),
                             controller: passwordcontroller,
                           ),
@@ -315,6 +331,25 @@ class _AuthScreenState extends State<AuthScreen> {
                                   await Provider.of<UserProvider>(context,
                                           listen: false)
                                       .updatetoken(response['token']);
+                                }
+                                if (context.mounted) {
+                                  List<dynamic> notes =
+                                      response['user']['notes'];
+
+                                  if (notes.isNotEmpty) {
+                                    for (var item in notes) {
+                                      item = json.decode(item);
+                                      if (item is Map<String, dynamic>) {
+                                        userCred.notes
+                                            .add(NoteModel.fromMap(item));
+                                      }
+                                    }
+                                  }
+
+                                  userCred.username =
+                                      response['user']['username'];
+
+                                  userCred.saveToSharedPreferences();
                                 }
                               }
                             },
