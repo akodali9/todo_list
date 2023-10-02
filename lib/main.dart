@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/components/navigation.dart';
 import 'package:todo_list/features/auth/auth_screen.dart';
 import 'package:todo_list/features/search/search.dart';
-import 'package:todo_list/features/settings/settings_page.dart';
 import 'package:todo_list/features/tasks/note_edit_area.dart';
 import 'package:todo_list/features/tasks/tasks.dart';
-import 'package:todo_list/models/drawer_item.dart';
-import 'package:todo_list/models/user.dart';
 import 'package:todo_list/providers/grid_provider.dart';
 import 'package:todo_list/providers/user_provider.dart';
 import 'package:todo_list/router.dart';
-import 'package:todo_list/widgets/drawertile.dart';
 
 import 'providers/user_simple_preferences.dart';
 
@@ -57,19 +52,6 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<DrawerItem> drawerCustomItems = [
-      DrawerItem(
-          icon: const Icon(Icons.feedback),
-          name: " Feedback",
-          // onpress: () {},
-          routename: ""),
-      DrawerItem(
-        icon: const Icon(Icons.settings),
-        name: " Settings",
-        // onpress: () => Navigator.of(context).pushNamed(SettingsPage.routename),
-        routename: SettingsPage.routename,
-      ),
-    ];
     bool isGridViewActive = Provider.of<GridSettings>(context).isGridActive;
     String userTokenKey = Provider.of<UserProvider>(context).token;
     return MaterialApp(
@@ -93,97 +75,7 @@ class _MainAppState extends State<MainApp> {
           ? const AuthScreen()
           : HomeScreen(
               isGridViewActive: isGridViewActive,
-              drawerCustomItems: drawerCustomItems),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-    required this.isGridViewActive,
-    required this.drawerCustomItems,
-  });
-
-  final bool isGridViewActive;
-  final List<DrawerItem> drawerCustomItems;
-
-  @override
-  Widget build(BuildContext context) {
-    fetchUser() async {
-      User? user = await User.loadFromSharedPreferences();
-      await Future.delayed(const Duration(milliseconds: 500));
-      return user;
-    }
-
-    return SafeArea(
-      child: Scaffold(
-        body: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SearchComp(isGridViewActive: isGridViewActive),
-          ],
-          body: FutureBuilder(
-            future: fetchUser(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                    child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator()));
-              } else {
-                return TasksScreen(
-                    isGridViewActive: isGridViewActive,
-                    tasksList: snapshot.data!.notes);
-              }
-            },
-          ),
-        ),
-        // bottomNavigationBar: const BottomCustomAppBar(),
-        floatingActionButton: Builder(
-          builder: (context) {
-            return FloatingActionButton(
-              enableFeedback: true,
-              onPressed: () {
-                Navigator.of(context).pushNamed(NoteEditPage.routename);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    duration: Duration(seconds: 1),
-                    content: Text("Entered Editing page"),
-                  ),
-                );
-              },
-              child: const Icon(Icons.add),
-            );
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        drawer: Drawer(
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.only(top: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  "TODO Time",
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Column(
-                  children: drawerCustomItems
-                      .map((item) => DrawerTileCustom(item: item))
-                      .toList(),
-                ),
-              ],
             ),
-          ),
-        ),
-      ),
     );
   }
 }

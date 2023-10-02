@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_list/features/tasks/services/notedit.dart';
 import 'package:todo_list/providers/grid_provider.dart';
 
 class SearchComp extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SearchCompState extends State<SearchComp> {
       floating: true,
       toolbarHeight: 70,
       titleSpacing: 0,
-      scrolledUnderElevation: 1,
+      scrolledUnderElevation: 0,
       snap: true,
       title: Padding(
         padding: const EdgeInsets.fromLTRB(0, 5, 10, 5),
@@ -52,9 +53,11 @@ class _SearchCompState extends State<SearchComp> {
                 Container(
                   margin: const EdgeInsets.only(right: 5),
                   child: IconButton(
-                    tooltip: "Search",
-                    onPressed: () {},
-                    icon: const Icon(Icons.search),
+                    tooltip: "Sync",
+                    onPressed: () {
+                      NotesCrudOps.syncnotes(context);
+                    },
+                    icon: const Icon(Icons.sync),
                   ),
                 ),
               ],

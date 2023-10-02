@@ -1,7 +1,8 @@
 const express = require("express");
-const Authrouter = require("./features/auth/auth");
+const Authrouter = require("./features/auth");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const noteupdaterouter = require("./features/noteupdate");
 const app = express();
 const port = 3000;
 
@@ -10,6 +11,7 @@ const DB =
 
 app.use(bodyParser.json());
 app.use("/auth", Authrouter);
+app.use("/feature", noteupdaterouter);
 
 mongoose
   .connect(DB)

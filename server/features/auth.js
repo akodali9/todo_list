@@ -1,7 +1,7 @@
 const express = require("express");
 const Authrouter = express.Router();
 const jwt = require("jsonwebtoken");
-const User = require("../../models/user");
+const User = require("../models/user");
 
 const jwtsecretkey = "dfkjf3kejfklenuy@F$^VJHbn";
 
@@ -19,8 +19,8 @@ Authrouter.post("/signup", async (req, res) => {
     }
 
     emptyarray = [
-      '{ "title": "note1", "noteDesc": "this is note 1" }',
-      '{ "title": "note2", "noteDesc": "this is note 2" }',
+      '{ "title": "note1", "noteDesc": "this is dummy note 1.\nyou can delete all of these" }',
+      '{ "title": "note2", "noteDesc": "this is dummy note 2" }',
     ];
 
     let user = new User({
