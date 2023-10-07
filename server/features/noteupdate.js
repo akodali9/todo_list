@@ -17,7 +17,7 @@ noteupdaterouter.post("/update", async (req, res) => {
     User.findOneAndUpdate(conditions, update, { new: true })
       .then((updatedDocument) => {
         if (updatedDocument) {
-          console.log("Document updated:", updatedDocument);
+          console.log("Document updated:");
         } else {
           console.log("Document not found");
         }

@@ -17,7 +17,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future<User?> fetchUser() async {
+    User? user = await User.loadFromSharedPreferences();
+    await Future.delayed(const Duration(milliseconds: 500));
+    return user;
+  }
+
+  late Future<User?> userModel;
+
   @override
+  void initState() {
+    super.initState();
+    userModel = fetchUser();
+  }
+
   Widget build(BuildContext context) {
     final Color color = Theme.of(context).colorScheme.surface;
     Color shadowcolor = Theme.of(context).colorScheme.shadow;
@@ -26,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<DrawerItem> drawerCustomItems = [
       DrawerItem(
-          icon: const Icon(Icons.feedback), name: " Feedback", routename: ""),
+        icon: const Icon(Icons.feedback),
+        name: " Feedback",
+        routename: "",
+      ),
       DrawerItem(
         icon: const Icon(Icons.settings),
         name: " Settings",
@@ -34,14 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ];
 
-    fetchUser() async {
-      User? user = await User.loadFromSharedPreferences();
-      await Future.delayed(const Duration(milliseconds: 500));
-      return user;
-    }
-
     return FutureBuilder(
-      future: fetchUser(),
+      future: userModel,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -89,7 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ).then((value) {
-                        setState(() {});
+                        setState(() {
+                          userModel = fetchUser();
+                        });
                       });
                     },
                     onLongPress: () {},

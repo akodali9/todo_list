@@ -55,7 +55,9 @@ class _SearchCompState extends State<SearchComp> {
                   child: IconButton(
                     tooltip: "Sync",
                     onPressed: () {
-                      NotesCrudOps.syncnotes(context);
+                      setState(() {
+                        NotesCrudOps.syncnotes(context);
+                      });
                     },
                     icon: const Icon(Icons.sync),
                   ),

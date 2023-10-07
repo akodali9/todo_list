@@ -57,7 +57,9 @@ class AuthService {
           );
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
     ;
   }
 

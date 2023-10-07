@@ -17,7 +17,7 @@ class NotesCrudOps {
         await syncnotes(context);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -32,7 +32,7 @@ class NotesCrudOps {
         await syncnotes(context);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -45,7 +45,7 @@ class NotesCrudOps {
         await syncnotes(context);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -64,8 +64,10 @@ class NotesCrudOps {
 
       final responsejson = json.decode(response.body);
       if (response.statusCode == 200) {
-        print("succesfull");
+        // print("succesfull");
       }
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 }

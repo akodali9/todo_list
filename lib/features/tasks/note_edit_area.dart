@@ -30,20 +30,27 @@ class NoteEditPage extends StatelessWidget {
       dummynoteDesc = "";
     }
 
+    print("$dummytitle, $dummynoteDesc");
+
     void savenote() {
       NoteModel newNote =
           NoteModel(title: titlecontroller.text, noteDesc: notecontroller.text);
       if (newnotecheck) {
         NotesCrudOps.addNewNote(context, newNote);
       } else if (newnotecheck == false) {
-        if (newNote.title != "") {
-          NotesCrudOps.savePresentNote(context, newNote, index!);
-        }
+        // if (newNote.title == "") {
+        NotesCrudOps.savePresentNote(context, newNote, index!);
+        // }
       }
     }
 
+    bool checkexitcondition() {
+      print(note?.title != dummytitle);
+      return true;
+    }
+
     return WillPopScope(
-      onWillPop: (titlecontroller.text != dummytitle)
+      onWillPop: checkexitcondition()
           ? () async {
               final shouldPop = await showDialog(
                 context: context,
@@ -169,6 +176,9 @@ class NoteEditPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 style: const TextStyle(fontSize: 24),
                 controller: titlecontroller,
+                onChanged: (value) {
+                  dummytitle = value;
+                },
                 decoration: const InputDecoration(
                   hintText: "Title",
                   hintStyle: TextStyle(

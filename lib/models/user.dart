@@ -27,7 +27,7 @@ class User {
   static Future<User?> loadFromSharedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final userJsonString = prefs.getString('user');
-    print(userJsonString);
+    // print(userJsonString);
 
     if (userJsonString != null) {
       final userMap = jsonDecode(userJsonString);
